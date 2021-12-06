@@ -52,9 +52,63 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  data () {
+    return {
+      task:'',
+      editTasks: null,
+      statuses: ['To-do', 'In-progress', 'Finished'],
+      tasks: [
+          {
+            name: 'Finish Cross-platform project',
+            status: 'To-do'
+          },
+          {
+            name: 'Update CV',
+            status: 'In-progress'
+          }
+        ]
+    }
+  },
+
+  methods: {
+
+    submitTask(){
+      if(this.task.length === 0)
+        return;
+
+      if (this.editTasks === null) {
+        this.tasks.push({
+          name: this.task,
+          status: 'To-do'
+        });
+      }
+      else {
+        this.tasks[this.editTasks].name = this.task;
+        this.editTasks = null;
+      }
+
+
+      this.task = '';
+    },
+
+    editTask(index){
+      this.task = this.tasks[index].name;
+      this.editTasks = index;
+    },
+
+    deleteTask(index){
+      this.tasks.splice(index, 1);
+    },
+
+    changeStatus(index){
+      let newIndex = this.statuses.indexOf(this.tasks[index].status);
+
+      if (++newIndex > 2)
+        newIndex = 0;
+
+      this.tasks[index].status = this.statuses[newIndex];
+    },
+
   }
 }
 </script>
